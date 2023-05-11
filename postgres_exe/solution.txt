@@ -1,0 +1,60 @@
+#1 create a table res_partner witch contain 2 columns: id(int Auto-increment) and full_name(string(100)). Fuel fields few registrs
+CREATE TABLE res_partner (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(50) NOT NULL
+    );
+INSERT INTO res_partner (name) VALUE ('Boris Isac'); # regist new row(regist)
+
+SELECT* FROM res_partner; #print all rows
+
+#2 create a table product_template witch contain 3 columns: id(int Auto-increment), name_prod(string(50)), price(float > 0)
+CREATE TABLE product_template (
+    id SERIAL PRIMARY KEY,
+    name_prod VARCHAR(50) NOT NULL,
+    price NUMERIC CHECK(price > 0) NOT NULL
+    );
+#Fuel fields
+#print all regists ordered by price(desc)
+SELECT * FROM product_template ORDER BY price desc;
+
+
+#3 create a table acc_move witch contain 4 columns: id(int Auto-increment), full_name(string(100)), edit_data(DATE), stage(string(20))
+CREATE TABLE acc_move (
+    id SERIAL PRIMARY KEY,
+    full_name VARCHAR(100) NOT NULL,
+    edit_date DATE NOT NULL default CURRENT_DATE,
+    stage VARCHAR(20) default 'inStock'
+    );
+
+select full_name, edit_date, stage from acc_move where stage = 'open' or stage = 'paid';
+sqlQuery print all columns less id if (stage==open | stage==paid )
+
+#4 create a table acc_move witch contain 3 columns: id(int Auto-increment), email(string(100)), category(string(20))
+CREATE TABLE hr_employee (
+    id SERIAL PRIMARY KEY,
+    email VARCHAR(100) NOT NULL,
+    category VARCHAR(50) default 'interchip'
+    );
+
+# sqlRequest will print all regists if column(value) contein "Manager"
+SELECT * FROM hr_employee WHERE category LIKE '%Manager%';
+
+#5 create 3 tables sales_order, product, sale_order_line.
+#sale_order_line has 2 columns with Foreign Key. one to column sale_order(id), secound to sale_order_line(id)
+CREATE TABLE sale_order(
+    id SERIAL PRIMARY KEY,
+    invoice VARCHAR(20)
+    );
+CREATE TABLE product (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(50) NOT NULL,
+    price REAL NOT NULL
+    );
+CREATE TABLE sale_order_line (
+    id SERIAL PRIMARY KEY,
+    fk_productId INT REFERENCES product(id) ,
+    quantety INT NOT NULL,
+    fk_sale_id INT REFERENCES sale_order(id)
+    );
+#print total quantety of sold products
+select sum(quantety) from sale_order_line;
